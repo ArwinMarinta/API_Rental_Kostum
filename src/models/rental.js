@@ -1,7 +1,7 @@
 const dbPool = require("../config/database.js");
 
 const getAllRental = () => {
-  const SQLQuery = "SELECT * FROM rental";
+  const SQLQuery = "CALL getAllRental";
   return dbPool.execute(SQLQuery);
 };
 

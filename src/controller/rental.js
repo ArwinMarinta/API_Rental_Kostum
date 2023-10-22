@@ -5,7 +5,7 @@ const getAllRental = async (req, res) => {
     const [data] = await RentalModels.getAllRental();
     res.json({
       message: "SUCCESS",
-      data: data,
+      data: data[0],
     });
   } catch (err) {
     res.status(500).json({

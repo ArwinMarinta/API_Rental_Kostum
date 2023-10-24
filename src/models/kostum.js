@@ -21,10 +21,16 @@ const getKostumById = (idKostum) => {
   return dbPool.execute(SQLQuery);
 };
 
+const getKostumByQueryDB = (nama_kostum) => {
+  const SQLQuery = `CALL getKostumByQuery('${nama_kostum}')`;
+  return dbPool.execute(SQLQuery);
+};
+
 module.exports = {
   getAllKostum,
   createNewKostum,
   updateKostum,
   deleteKostum,
   getKostumById,
+  getKostumByQueryDB,
 };

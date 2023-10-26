@@ -103,25 +103,44 @@ const getKostumById = async (req, res) => {
   }
 };
 const getKostumByQuery = async (req, res) => {
-  const nama_kostum = req.query.nama_kostum;
+  const { id_kostum, id_rental, nama_kostum, ukuran } = req.query;
+  console.log(ukuran);
 
   try {
-    const [data] = await KostumModels.getKostumByQueryDB(nama_kostum);
-    const totalResults = data[0].reduce((total) => {
-      return total + 1;
-    }, 0);
-    if (data.length > 0) {
-      res.json({
-        message: "SUCCESS",
+    if (id_rental) {
+      const [data] = await KostumModels.getKostumByQueryDB(id_rental);
+      const totalResults = data[0].reduce((total) => {
+        return total + 1;
+      }, 0);
+      return res.json({
+        status: "SUCCESS",
         total_data: totalResults,
         data: data[0],
       });
-    } else {
-      res.status(404).json({
-        message: "Not found",
+    } else if (nama_kostum) {
+      const [data] = await KostumModels.getKostumByQueryDB(
+        id_kostum,
+        nama_kostum
+      );
+      console.log(data);
+      const totalResults = data[0].reduce((total) => {
+        return total + 1;
+      }, 0);
+      return res.json({
+        status: "SUCCESS",
+        total_data: totalResults,
+        data: data[0],
+      });
+    } else if (ukuran) {
+      const [data] = await KostumModels.getKostumByQueryDB(nama_kostum, ukuran);
+      console.log(data);
+      return res.json({
+        status: "SUCCESS",
+        data: data[0],
       });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Server Error",
     });

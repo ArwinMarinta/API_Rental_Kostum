@@ -54,7 +54,7 @@ const updateDetailKategori = async (req, res) => {
       data: body,
     });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res.status(500).json({
       status: "False",
       status_message: "Server Error",

@@ -20,17 +20,8 @@ const getAllKategori = async (req, res) => {
 
 //masih error
 const creatKategori = async (req, res) => {
-  const { idKat } = req.params;
   const { body } = req;
   try {
-    const checkID = await KategoriModels.getAllKategoriByID(idKat);
-    console.log(checkID);
-    if (checkID[0][0]) {
-      return res.status(404).json({
-        status_message: "false",
-        message: "data already",
-      });
-    }
     await KategoriModels.createKategori(body);
     res.json({
       status: "SUCCESS",
@@ -46,8 +37,7 @@ const creatKategori = async (req, res) => {
 const updateKategori = async (req, res) => {
   const { idKat } = req.params;
   const { body } = req;
-  console.log(body);
-  console.log(idKat);
+
   try {
     const checkID = await KategoriModels.getAllKategoriByID(idKat);
     if (checkID[0][0].length === 0) {
@@ -59,6 +49,7 @@ const updateKategori = async (req, res) => {
     await KategoriModels.updateKategori(body, idKat);
     res.json({
       status_message: "SUCCESS",
+      data: body,
     });
   } catch (err) {
     res.status(500).json({

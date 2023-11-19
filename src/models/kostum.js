@@ -21,10 +21,10 @@ const getKostumById = (idKostum) => {
   return dbPool.execute(SQLQuery);
 };
 
-const getKostumByQueryDB = (id_rental, nama_kostum, ukuran) => {
+const getKostumByQueryDB = (id_rental, nama_kostum, harga, ukuran) => {
   let SQLQuery;
   if (id_rental) {
-    SQLQuery = `CALL GetCostumeByQuery(${null}, '${id_rental}', ${null}, ${null}, ${null}, ${null}, ${null})`;
+    SQLQuery = `CALL GetCostumeByQuery(${null}, ${id_rental}, ${null}, ${null}, ${null}, ${null}, ${null})`;
   } else if (nama_kostum) {
     SQLQuery = `CALL GetCostumeByQuery(${null}, ${null}, '${nama_kostum}', ${null}, ${null}, ${null}, ${null})`;
   } else if (ukuran) {

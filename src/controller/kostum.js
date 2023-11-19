@@ -1,5 +1,6 @@
 const { json } = require("body-parser");
 const KostumModels = require("../models/kostum.js");
+const rentalModels = require("../models/rental.js");
 
 const getAllKostum = async (req, res) => {
   try {
@@ -103,11 +104,30 @@ const getKostumById = async (req, res) => {
   }
 };
 const getKostumByQuery = async (req, res) => {
-  const { id_kostum, id_rental, nama_kostum, ukuran } = req.query;
+  const {
+    id_kostum,
+    id_rental,
+    nama_kostum,
+    harga,
+    ukuran,
+    durasi,
+    keterangan,
+  } = req.query;
+  console.log(nama_kostum);
   console.log(ukuran);
 
   try {
     if (id_rental) {
+      //mengecek apakah id rental yang di cari terdapat di dalam databases dari model rental
+      const checkId = await rentalModels.getRentalById(id_rental);
+      if (checkId[0][0].length === 0) {
+        return res.status(404).json({
+          status: "False",
+          status_message: "Data Not Found",
+        });
+      }
+
+      //Jika data di atas True, maka kondisi ini akan di jalankan
       const [data] = await KostumModels.getKostumByQueryDB(id_rental);
       const totalResults = data[0].reduce((total) => {
         return total + 1;
@@ -122,7 +142,7 @@ const getKostumByQuery = async (req, res) => {
         id_kostum,
         nama_kostum
       );
-      console.log(data);
+      // console.log(data);
       const totalResults = data[0].reduce((total) => {
         return total + 1;
       }, 0);
@@ -132,15 +152,20 @@ const getKostumByQuery = async (req, res) => {
         data: data[0],
       });
     } else if (ukuran) {
-      const [data] = await KostumModels.getKostumByQueryDB(nama_kostum, ukuran);
-      console.log(data);
+      const [data] = await KostumModels.getKostumByQueryDB(
+        id_kostum,
+        id_rental,
+        nama_kostum,
+        ukuran
+      );
+      // console.log(data);
       return res.json({
         status: "SUCCESS",
         data: data[0],
       });
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res.status(500).json({
       message: "Server Error",
     });
